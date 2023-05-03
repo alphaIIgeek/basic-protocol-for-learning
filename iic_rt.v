@@ -23,7 +23,7 @@
 module iic_rt(
 input wire clk,
 input wire valid,//拉高一个周期，载入数据
-output reg right=1,//是否准备好载入/输出数据(高电平时read与ok有效)
+output reg ready=1,//是否准备好载入/输出数据(高电平时read与ok有效)
 input wire[7:0] write,
 output reg[7:0] read=0,
 output reg ok=0,//该次操作是否成功 0失败 1成功
@@ -63,11 +63,11 @@ always@(posedge clk)begin
                         byte<=write;
                         rw<=RW;
                         sp<=SP;//读取valid高电平数据
-                        right<=0;
+                        ready<=0;
                         state<=(SP[1])? START:DATA;
                     end
                     else begin
-                        right<=1;
+                        ready<=1;
                         state<=IDLE;
                     end
                 end
